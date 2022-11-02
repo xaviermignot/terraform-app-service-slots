@@ -11,6 +11,10 @@ jobs:
   check:
     runs-on: ubuntu-latest
 
+    env:
+      TF_CLOUD_ORGANIZATION: ${{ secrets.TF_CLOUD_ORGANIZATION }}
+      TF_WORKSPACE: ${{ secrets.TF_WORKSPACE }}
+
     steps:
       - uses: actions/checkout@v3
 
