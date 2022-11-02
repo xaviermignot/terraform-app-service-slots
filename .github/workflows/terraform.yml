@@ -8,7 +8,7 @@ defaults:
     working-directory: infra
 
 jobs:
-  check:
+  provision:
     runs-on: ubuntu-latest
 
     env:
@@ -36,6 +36,11 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CREDENTIALS.clientId }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CREDENTIALS.clientSecret }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_CREDENTIALS.tenantId }}
 
       - name: Update GitHub secrets
         run: |
