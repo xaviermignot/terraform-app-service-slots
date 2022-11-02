@@ -14,7 +14,6 @@ jobs:
     env:
       TF_CLOUD_ORGANIZATION: ${{ secrets.TF_CLOUD_ORGANIZATION }}
       TF_WORKSPACE: ${{ secrets.TF_WORKSPACE }}
-      GITHUB_TOKEN: ${{ secrets.TEST_GH_TOKEN }}
 
     permissions:
       actions: write
@@ -53,3 +52,5 @@ jobs:
           gh secret set APP_NAME --body "$apsName"
           publishProfile=$(az webapp deployment list-publishing-profiles -g "$rgName" -n "$apsName" --slot staging --xml)
           gh secret set STAGING_PUBLISH_PROFILE --body "$publishProfile"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
