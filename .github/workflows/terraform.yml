@@ -46,6 +46,6 @@ jobs:
         run: |
           rgName=$(terraform output -raw resource_group_name)
           apsName=$(terraform output -raw app_service_name)
-          gh secret set APP_NAME --body $apsName
-          publishProfile=$(az webapp deployment list-publishing-profiles -g $rgName -n $apsName --slot staging --xml)
-          gh secret set STAGING_PUBLISH_PROFILE --body $publishProfile
+          gh secret set APP_NAME --body "$apsName"
+          publishProfile=$(az webapp deployment list-publishing-profiles -g "$rgName" -n "$apsName" --slot staging --xml)
+          gh secret set STAGING_PUBLISH_PROFILE --body "$publishProfile"
