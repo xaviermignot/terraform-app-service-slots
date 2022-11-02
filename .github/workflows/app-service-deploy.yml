@@ -33,10 +33,10 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o publish/DemoApi
 
-      - name: Deploy to App Service
+      - name: Deploy to App Service slot
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ inputs.app_name }} # Replace with your app name
+          app-name: ${{ secrets.APP_NAME }} 
           slot-name: staging
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
+          publish-profile: ${{ secrets.STAGING_PUBLISH_PROFILE  }}
           package: ./src/DemoApi/publish/DemoApi
