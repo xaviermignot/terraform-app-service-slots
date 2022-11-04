@@ -2,10 +2,6 @@ name: Deploy to App Service
 
 on:
   workflow_dispatch:
-    inputs:
-      app_name:
-        required: true
-        type: string
 
 jobs:
   build-and-deploy:
