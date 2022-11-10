@@ -9,3 +9,12 @@ variable "project" {
   default     = "aps-slots-demo"
   description = "the project name to use in all resource names"
 }
+
+variable "active_app" {
+  type    = string
+  default = "blue"
+  validation {
+    condition     = var.active_app == "blue" || var.active_app == "green"
+    error_message = "The active_app value must be either 'blue' or 'green'."
+  }
+}
