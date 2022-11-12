@@ -31,3 +31,14 @@ variable "active_app" {
     error_message = "The active_app value must be either 'blue' or 'green'."
   }
 }
+
+variable "blue_app_settings" {
+  type    = map(string)
+  default = null
+}
+
+variable "green_app_settings" {
+  type    = map(string)
+  default = null
+}
+

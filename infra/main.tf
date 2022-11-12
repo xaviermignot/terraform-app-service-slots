@@ -24,4 +24,8 @@ module "app_service" {
   app_name = random_pet.app_name.id
 
   active_app = var.active_app
+
+  green_app_settings = {
+    someKey = "A new version"
+  }
 }
