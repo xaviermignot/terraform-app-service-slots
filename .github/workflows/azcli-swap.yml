@@ -2,14 +2,6 @@ name: Swap App Service slots using Azure CLI
 
 on:
   workflow_dispatch:
-    inputs:
-      active_app:
-        description: 'The version of the app to put in production'
-        required: true
-        type: choice
-        options:
-          - blue
-          - green
 
 defaults:
   run:
