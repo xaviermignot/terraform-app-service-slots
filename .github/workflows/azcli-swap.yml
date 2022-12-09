@@ -1,0 +1,44 @@
+name: Swap App Service slots using Azure CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      active_app:
+        description: 'The version of the app to put in production'
+        required: true
+        type: choice
+        options:
+          - blue
+          - green
+
+defaults:
+  run:
+    working-directory: infra
+
+jobs:
+  swap:
+    runs-on: ubuntu-latest
+
+    env:
+      TF_CLOUD_ORGANIZATION: ${{ secrets.TF_CLOUD_ORGANIZATION }}
+      TF_WORKSPACE: ${{ secrets.TF_WORKSPACE }}
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Swap WebApp
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp deployment slot swap -g ${{ secrets.RG_NAME }} -n ${{ secrets.APP_NAME }} -s staging
+      
+      - name: Update active slot variable
+        run: |
+          [[ $ACTIVE_APP == green ]] && newActiveApp="blue" || newActiveApp="green"
+          gh secret set ACTIVE_APP --body "$newActiveApp"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          ACTIVE_APP: ${{ secrets.ACTIVE_APP }}
