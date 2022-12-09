@@ -29,8 +29,7 @@ jobs:
       
       - name: Update active slot variable
         run: |
-          [[ $ACTIVE_APP == green ]] && newActiveApp="blue" || newActiveApp="green"
+          [[ '${{ secrets.ACTIVE_APP }}' == green ]] && newActiveApp="blue" || newActiveApp="green"
           gh secret set ACTIVE_APP --body "$newActiveApp"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          ACTIVE_APP: ${{ secrets.ACTIVE_APP }}
