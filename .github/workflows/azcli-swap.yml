@@ -3,10 +3,6 @@ name: Swap App Service slots using Azure CLI
 on:
   workflow_dispatch:
 
-defaults:
-  run:
-    working-directory: infra
-
 jobs:
   swap:
     runs-on: ubuntu-latest
@@ -21,11 +17,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Swap WebApp
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az webapp deployment slot swap -g ${{ secrets.RG_NAME }} -n ${{ secrets.APP_NAME }} -s staging
+      # - name: Swap WebApp
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: |
+      #       az webapp deployment slot swap -g ${{ secrets.RG_NAME }} -n ${{ secrets.APP_NAME }} -s staging
       
       - name: Update active slot variable
         run: |
