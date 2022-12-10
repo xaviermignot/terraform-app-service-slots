@@ -7,5 +7,5 @@ output "resource_group_name" {
 }
 
 output "active_app" {
-  value = var.active_app
+  value = module.app_service.active_app
 }

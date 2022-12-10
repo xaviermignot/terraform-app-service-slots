@@ -23,7 +23,7 @@ module "app_service" {
   plan_id  = module.plan.plan_id
   app_name = random_pet.app_name.id
 
-  active_app = var.active_app
+  active_app = var.active_app != "" ? var.active_app : "blue"
 
   green_app_settings = {
     someKey = "A new version"
