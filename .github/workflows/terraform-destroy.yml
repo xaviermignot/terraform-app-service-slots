@@ -38,7 +38,9 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+        run: |
+          terraform init
+          terraform destroy -auto-approve
 
       - name: Update GitHub secrets
         run: |
