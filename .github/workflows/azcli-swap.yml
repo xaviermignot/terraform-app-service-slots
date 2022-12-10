@@ -3,6 +3,10 @@ name: Swap App Service slots using Azure CLI
 on:
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: infra
+
 jobs:
   swap:
     runs-on: ubuntu-latest
