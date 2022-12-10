@@ -8,7 +8,7 @@ defaults:
     working-directory: infra
 
 jobs:
-  provision:
+  destroy:
     runs-on: ubuntu-latest
 
     env:
