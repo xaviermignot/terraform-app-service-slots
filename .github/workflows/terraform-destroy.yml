@@ -1,0 +1,50 @@
+name: Destroy Azure resources with Terraform
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: infra
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+
+    env:
+      TF_CLOUD_ORGANIZATION: ${{ secrets.TF_CLOUD_ORGANIZATION }}
+      TF_WORKSPACE: ${{ secrets.TF_WORKSPACE }}
+
+    permissions:
+      actions: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set-up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
+
+      - name: Update GitHub secrets
+        run: |
+          gh secret delete APP_NAME
+          gh secret delete RG_NAME
+          gh secret delete ACTIVE_APP
+          gh secret delete STAGING_PUBLISH_PROFILE
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
