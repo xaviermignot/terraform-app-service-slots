@@ -28,14 +28,6 @@ jobs:
         with:
           inlineScript: |
             az webapp deployment slot swap -g ${{ secrets.RG_NAME }} -n ${{ secrets.APP_NAME }} -s staging
-      
-      - name: Update active slot variable
-        run: |
-          [[ '${{ secrets.ACTIVE_APP }}' == 'green' ]] && newActiveApp="blue" || newActiveApp="green"
-          echo "${{ secrets.ACTIVE_APP }} => $newActiveApp"
-          gh secret set ACTIVE_APP --body "$newActiveApp"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Set-up Terraform
         uses: hashicorp/setup-terraform@v2
@@ -45,12 +37,19 @@ jobs:
       
       - name: Terraform Apply
         run: | 
+          [[ '${{ secrets.ACTIVE_APP }}' == 'green' ]] && newActiveApp="blue" || newActiveApp="green"
           terraform init
-          terraform apply -auto-approve
+          terraform apply -auto-approve -var active_app=$newActiveApp
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          TF_VAR_active_app: ${{ secrets.ACTIVE_APP }}
+
+      - name: Update active app in GitHub secrets
+        run: |
+          activeApp=$(terraform output -raw active_app)
+          gh secret set ACTIVE_APP --body "$activeApp"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
