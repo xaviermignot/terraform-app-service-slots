@@ -39,7 +39,9 @@ jobs:
         run: terraform validate
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: |
+          echo "Applying with active app $TF_VAR_active_app"
+          terraform apply -auto-approve
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -52,6 +54,7 @@ jobs:
           rgName=$(terraform output -raw resource_group_name)
           apsName=$(terraform output -raw app_service_name)
           activeApp=$(terraform output -raw active_app)
+          echo "Setting active app to $active_app..."
           gh secret set APP_NAME --body "$apsName"
           gh secret set RG_NAME --body "$rgName"
           gh secret set ACTIVE_APP --body "$activeApp"

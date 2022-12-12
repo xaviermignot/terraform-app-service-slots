@@ -37,7 +37,9 @@ jobs:
       
       - name: Terraform Apply
         run: | 
-          [[ '${{ secrets.ACTIVE_APP }}' == 'green' ]] && newActiveApp="blue" || newActiveApp="green"
+          currentActiveApp=$(terraform output -raw active_app)
+          [[ "$currentActiveApp" == 'green' ]] && newActiveApp="blue" || newActiveApp="green"
+          echo "Swapping from $currentActiveApp to $newActiveApp..."
           terraform init
           terraform apply -auto-approve -var active_app=$newActiveApp
         env:
@@ -52,4 +54,3 @@ jobs:
           gh secret set ACTIVE_APP --body "$activeApp"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-
