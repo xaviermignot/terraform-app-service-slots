@@ -37,10 +37,10 @@ jobs:
       
       - name: Terraform Apply
         run: | 
+          terraform init
           currentActiveApp=$(terraform output -raw active_app)
           [[ "$currentActiveApp" == 'green' ]] && newActiveApp="blue" || newActiveApp="green"
           echo "Swapping from $currentActiveApp to $newActiveApp..."
-          terraform init
           terraform apply -auto-approve -var active_app=$newActiveApp
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
