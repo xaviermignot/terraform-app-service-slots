@@ -40,24 +40,22 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          echo "Applying with active app $TF_VAR_active_app"
-          terraform apply -auto-approve
+          activeApp=$(terraform output -raw active_app)
+          echo "Applying with active app $activeApp"
+          terraform apply -auto-approve -var active_app=$activeApp
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          TF_VAR_active_app: ${{ secrets.ACTIVE_APP }}
 
       - name: Update GitHub secrets
         run: |
           rgName=$(terraform output -raw resource_group_name)
           apsName=$(terraform output -raw app_service_name)
-          activeApp=$(terraform output -raw active_app)
           echo "Setting active app to $active_app..."
           gh secret set APP_NAME --body "$apsName"
           gh secret set RG_NAME --body "$rgName"
-          gh secret set ACTIVE_APP --body "$activeApp"
           publishProfile=$(az webapp deployment list-publishing-profiles -g "$rgName" -n "$apsName" --slot staging --xml)
           gh secret set STAGING_PUBLISH_PROFILE --body "$publishProfile"
         env:
