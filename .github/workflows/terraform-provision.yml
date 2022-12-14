@@ -40,7 +40,7 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          activeApp=$(terraform output -raw active_app)
+          activeApp=$(terraform show -json | jq -r '.values.outputs.active_app.value // "blue"')
           echo "Applying with active app $activeApp"
           terraform apply -auto-approve -var active_app=$activeApp
         env:
