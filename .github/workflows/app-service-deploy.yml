@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: src/DemoApi
+        working-directory: src/ApsSlotsDemo.App
 
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o publish/DemoApi
+        run: dotnet publish -c Release -o publish/ApsSlotsDemo.App
 
       - name: Deploy to App Service slot
         uses: azure/webapps-deploy@v2
@@ -35,4 +35,4 @@ jobs:
           app-name: ${{ secrets.APP_NAME }} 
           slot-name: staging
           publish-profile: ${{ secrets.STAGING_PUBLISH_PROFILE  }}
-          package: ./src/DemoApi/publish/DemoApi
+          package: ./src/ApsSlotsDemo.App/publish/ApsSlotsDemo.App
