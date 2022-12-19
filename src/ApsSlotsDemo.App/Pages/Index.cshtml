@@ -1,0 +1,32 @@
+@page
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello world !!!</title>
+    <link rel="stylesheet" href="~/assets/main.css" asp-append-version="true">
+</head>
+
+<body>
+    <main>
+        <header>
+            <h4>Hello from green app</h4>
+        </header>
+        <section>
+            <p>This value comes from configuration: @Configuration["EnvironmentLabel"]</p>
+        </section>
+    </main>
+    @if (bool.TryParse(Configuration["IsStaging"], out bool isStaging) && isStaging)
+    {
+        <div id="staging-info">
+            <p>This a testing version, test before swapping to production !!!</p>
+        </div>
+    }
+</body>
+
+</html>
