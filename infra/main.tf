@@ -25,7 +25,11 @@ module "app_service" {
 
   active_app = var.active_app != "" ? var.active_app : "blue"
 
+  blue_app_settings = {
+    "EnvironmentLabel" = "This is the blue version"
+  }
+
   green_app_settings = {
-    someKey = "A new version"
+    EnvironmentLabel = "This is the green version"
   }
 }

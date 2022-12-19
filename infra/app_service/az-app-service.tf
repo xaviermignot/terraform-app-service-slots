@@ -6,6 +6,10 @@ resource "azurerm_linux_web_app" "app" {
 
   app_settings = var.active_app == "blue" ? var.blue_app_settings : var.green_app_settings
 
+  sticky_settings {
+    app_setting_names = ["IsStaging"]
+  }
+
   site_config {
     application_stack {
       dotnet_version = "6.0"
