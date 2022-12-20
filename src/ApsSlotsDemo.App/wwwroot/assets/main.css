@@ -26,3 +26,7 @@ header {
     padding: 1pt 10px;
     width: 600px;
 }
+
+.config-value {
+    font-style: italic;
+}

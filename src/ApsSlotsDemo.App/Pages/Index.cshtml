@@ -18,13 +18,13 @@
             <h4>Hello from blue app</h4>
         </header>
         <section>
-            <p>This value comes from configuration: @Configuration["EnvironmentLabel"]</p>
+            <p>This value comes from configuration: <span class="config-value">@Configuration["EnvironmentLabel"]</span></p>
         </section>
     </main>
     @if (bool.TryParse(Configuration["IsStaging"], out bool isStaging) && isStaging)
     {
         <div id="staging-info">
-            <p>This a testing version, test before swapping to production !!!</p>
+            <p>This panel is visible only on the staging environment</p>
         </div>
     }
 </body>
