@@ -3,8 +3,8 @@ body {
 }
 
 main {
-    background-color: lightblue;
-    border: 2px groove darkblue;
+    background-color: lightgreen;
+    border: 2px groove darkgreen;
     border-radius: 10px;
     width: 600px;
     margin: 20px 0 0 20px;
