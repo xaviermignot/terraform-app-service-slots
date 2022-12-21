@@ -8,6 +8,7 @@ jobs:
     uses: .github/workflows/terraform-provision.yml
     secrets: inherit
   deploy-blue-app-to-production:
+    needs: provision-resources
     uses: .github/workflows/app-service-deploy.yml
     with:
       apsName: ${{ needs.provision-resources.outputs.apsName }}
@@ -15,6 +16,7 @@ jobs:
     secrets:
       PUBLISH_PROFILE: ${{ secrets.PRODUCTION_PUBLISH_PROFILE }}
   deploy-green-app-to-staging:
+    needs: provision-resources
     uses: .github/workflows/app-service-deploy.yml
     with:
       apsName: ${{ needs.provision-resources.outputs.apsName }}
