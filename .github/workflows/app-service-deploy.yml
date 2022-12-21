@@ -22,7 +22,6 @@ on:
       PUBLISH_PROFILE:
         description: The publish profile to use for deployment
         required: true
-        type: string
 
 jobs:
   build-and-deploy:
