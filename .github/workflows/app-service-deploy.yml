@@ -51,7 +51,7 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o publish/ApsSlotsDemo.App
 
-      - name: Deploy to App Service slot
+      - name: Deploy to App Service
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ inputs.apsName }} 
