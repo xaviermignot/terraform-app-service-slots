@@ -56,8 +56,8 @@ jobs:
           activeApp=$(terraform show -json | jq -r '.values.outputs.active_app.value // "blue"')
           echo "Applying with active app $activeApp"
           terraform apply -auto-approve -var active_app=$activeApp
-          echo "rgName=$(terraform output -raw resource_group_name) >> $GITHUB_ENV"
-          echo "apsName=$(terraform output -raw app_service_name) >> $GITHUB_ENV"
+          echo "rgName=$(terraform output -raw resource_group_name)" >> $GITHUB_ENV
+          echo "apsName=$(terraform output -raw app_service_name)" >> $GITHUB_ENV
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
