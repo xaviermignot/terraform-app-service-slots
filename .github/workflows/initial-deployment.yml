@@ -1,0 +1,23 @@
+name: Initial deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  provision-resources:
+    uses: .github/workflows/terraform-provision.yml
+    secrets: inherit
+  deploy-blue-app-to-production:
+    uses: .github/workflows/app-service-deploy.yml
+    with:
+      apsName: ${{ needs.provision-resources.outputs.apsName }}
+      ref: blue
+    secrets:
+      PUBLISH_PROFILE: ${{ secrets.PRODUCTION_PUBLISH_PROFILE }}
+  deploy-green-app-to-staging:
+    uses: .github/workflows/app-service-deploy.yml
+    with:
+      apsName: ${{ needs.provision-resources.outputs.apsName }}
+      slot: staging
+      ref: green
+    secrets: inherit

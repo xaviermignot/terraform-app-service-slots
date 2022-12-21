@@ -2,6 +2,14 @@ name: Provision Azure resources with Terraform
 
 on:
   workflow_dispatch:
+  workflow_call:
+    outputs:
+      rgName:
+        description: The name of the resource group
+        value: ${{ jobs.provision.outputs.rgName }}
+      apsName:
+        description: The name of the App Service
+        value: ${{ jobs.provision.outputs.apsName }}
 
 defaults:
   run:
@@ -14,6 +22,10 @@ jobs:
     env:
       TF_CLOUD_ORGANIZATION: ${{ secrets.TF_CLOUD_ORGANIZATION }}
       TF_WORKSPACE: ${{ secrets.TF_WORKSPACE }}
+
+    outputs:
+      rgName: ${{ steps.apply.outputs.rgName }}
+      apsName: ${{ steps.apply.outputs.apsName }}
 
     permissions:
       actions: write
@@ -39,10 +51,13 @@ jobs:
         run: terraform validate
 
       - name: Terraform Apply
+        id: apply
         run: |
           activeApp=$(terraform show -json | jq -r '.values.outputs.active_app.value // "blue"')
           echo "Applying with active app $activeApp"
           terraform apply -auto-approve -var active_app=$activeApp
+          echo "rgName=$(terraform output -raw rg_name) >> $GITHUB_OUTPUT"
+          echo "apsName=$(terraform output -raw app_service_name) >> $GITHUB_OUTPUT"
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -50,12 +65,15 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Update GitHub secrets
+        id: update-secrets
         run: |
-          rgName=$(terraform output -raw resource_group_name)
-          apsName=$(terraform output -raw app_service_name)
-          gh secret set APP_NAME --body "$apsName"
-          gh secret set RG_NAME --body "$rgName"
-          publishProfile=$(az webapp deployment list-publishing-profiles -g "$rgName" -n "$apsName" --slot staging --xml)
-          gh secret set STAGING_PUBLISH_PROFILE --body "$publishProfile"
+          gh secret set APP_NAME --body $APP_NAME
+          gh secret set RG_NAME --body $RG_NAME
+          productionPublishProfile=$(az webapp deployment list-publishing-profiles -g "$RG_NAME" -n "$APP_NAME" --xml)
+          gh secret set PRODUCTION_PUBLISH_PROFILE --body "$productionPublishProfile"
+          stagingPublishProfile=$(az webapp deployment list-publishing-profiles -g "$RG_NAME" -n "$APP_NAME" --slot staging --xml)
+          gh secret set STAGING_PUBLISH_PROFILE --body "$stagingPublishProfile"
         env:
+          RG_NAME: ${{ steps.apply.outputs.rgName }}
+          APP_NAME: ${{ steps.apply.outputs.apsName }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}

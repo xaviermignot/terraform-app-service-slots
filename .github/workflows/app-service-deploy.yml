@@ -2,6 +2,22 @@ name: Deploy to App Service
 
 on:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      apsName:
+        description: The name of the App Service
+        required: true
+        type: string
+      slot:
+        description: The slot to deploy the application to
+        default: production
+        required: false
+        type: string
+      ref:
+        description: The branch, tag or commit (SHA) to deploy
+        default: main
+        required: false
+        type: string
 
 jobs:
   build-and-deploy:
@@ -12,6 +28,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v3
@@ -32,7 +50,7 @@ jobs:
       - name: Deploy to App Service slot
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ secrets.APP_NAME }} 
-          slot-name: staging
-          publish-profile: ${{ secrets.STAGING_PUBLISH_PROFILE  }}
+          app-name: ${{ inputs.apsName }} 
+          slot-name: ${{ inputs.slot }}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE  }}
           package: ./src/ApsSlotsDemo.App/publish/ApsSlotsDemo.App
