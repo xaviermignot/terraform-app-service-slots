@@ -18,12 +18,12 @@ on:
         default: main
         required: false
         type: string
-    secrets:
-      PUBLISH_PROFILE:
-        description: The publish profile to use for deployment
-        required: true
-      AZURE_CREDENTIALS:
-        required: true
+    # secrets:
+    #   PUBLISH_PROFILE:
+    #     description: The publish profile to use for deployment
+    #     required: true
+    #   AZURE_CREDENTIALS:
+    #     required: true
 
 jobs:
   build-and-deploy:
@@ -58,5 +58,5 @@ jobs:
         with: 
           app-name: ${{ inputs.apsName }} 
           slot-name: ${{ inputs.slot }}
-          publish-profile: ${{ secrets.PUBLISH_PROFILE  }}
+          publish-profile: ${{ secrets.STAGING_PUBLISH_PROFILE  }}
           package: ./src/ApsSlotsDemo.App/publish/ApsSlotsDemo.App
