@@ -22,6 +22,8 @@ on:
       PUBLISH_PROFILE:
         description: The publish profile to use for deployment
         required: true
+      AZURE_CREDENTIALS:
+        required: true
 
 jobs:
   build-and-deploy:
