@@ -1,7 +1,6 @@
 name: Deploy to App Service
 
 on:
-  workflow_dispatch:
   workflow_call:
     inputs:
       apsName:
@@ -18,12 +17,6 @@ on:
         default: main
         required: false
         type: string
-    # secrets:
-    #   PUBLISH_PROFILE:
-    #     description: The publish profile to use for deployment
-    #     required: true
-    #   AZURE_CREDENTIALS:
-    #     required: true
 
 jobs:
   build-and-deploy:

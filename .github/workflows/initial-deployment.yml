@@ -14,8 +14,6 @@ jobs:
       apsName: ${{ needs.provision-resources.outputs.apsName }}
       ref: blue
     secrets: inherit
-      # PUBLISH_PROFILE: ${{ secrets.PRODUCTION_PUBLISH_PROFILE }}
-      # AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   deploy-green-app-to-staging:
     needs: provision-resources
     uses: ./.github/workflows/app-service-deploy.yml
@@ -24,5 +22,3 @@ jobs:
       slot: staging
       ref: green
     secrets: inherit
-      # PUBLISH_PROFILE: ${{ secrets.STAGING_PUBLISH_PROFILE }}
-      # AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

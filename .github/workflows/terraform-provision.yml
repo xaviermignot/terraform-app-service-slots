@@ -1,7 +1,6 @@
 name: Provision Azure resources with Terraform
 
 on:
-  workflow_dispatch:
   workflow_call:
     outputs:
       rgName:
