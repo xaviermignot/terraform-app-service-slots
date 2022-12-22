@@ -1,4 +1,4 @@
-name: Destroy Azure resources with Terraform
+name: 03 - Destroy Azure resources with Terraform
 
 on:
   workflow_dispatch:
@@ -47,5 +47,6 @@ jobs:
           gh secret delete APP_NAME
           gh secret delete RG_NAME
           gh secret delete STAGING_PUBLISH_PROFILE
+          gh secret delete PRODUCTION_PUBLISH_PROFILE
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}

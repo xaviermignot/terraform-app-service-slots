@@ -1,4 +1,4 @@
-name: Swap App Service slots using Azure CLI
+name: 02 - Swap App Service slots using Azure CLI
 
 on:
   workflow_dispatch:
