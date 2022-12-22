@@ -46,7 +46,5 @@ jobs:
         run: |
           gh secret delete APP_NAME
           gh secret delete RG_NAME
-          gh secret delete STAGING_PUBLISH_PROFILE
-          gh secret delete PRODUCTION_PUBLISH_PROFILE
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
