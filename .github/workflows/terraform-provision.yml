@@ -2,13 +2,6 @@ name: Provision Azure resources with Terraform
 
 on:
   workflow_call:
-    outputs:
-      rgName:
-        description: The name of the resource group
-        value: ${{ jobs.provision.outputs.rgName }}
-      apsName:
-        description: The name of the App Service
-        value: ${{ jobs.provision.outputs.apsName }}
 
 defaults:
   run:
@@ -55,8 +48,6 @@ jobs:
           activeApp=$(terraform show -json | jq -r '.values.outputs.active_app.value // "blue"')
           echo "Applying with active app $activeApp"
           terraform apply -auto-approve -var active_app=$activeApp
-          echo "rgName=$(terraform output -raw resource_group_name)" >> $GITHUB_ENV
-          echo "apsName=$(terraform output -raw app_service_name)" >> $GITHUB_ENV
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -66,9 +57,9 @@ jobs:
       - name: Update GitHub secrets
         id: update-secrets
         run: |
-          gh secret set APP_NAME --body $APP_NAME
-          gh secret set RG_NAME --body $RG_NAME
+          rgName=$(terraform output -raw resource_group_name)
+          gh secret set RG_NAME --body $rgName
+          apsName=$(terraform output -raw app_service_name)
+          gh secret set APP_NAME --body $appName
         env:
-          RG_NAME: ${{ env.rgName }}
-          APP_NAME: ${{ env.apsName }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
