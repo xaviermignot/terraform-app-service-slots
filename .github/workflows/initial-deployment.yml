@@ -5,18 +5,18 @@ on:
 
 jobs:
   provision-resources:
-    uses: ./.github/workflows/reuse/terraform-provision.yml
+    uses: ./.github/workflows/terraform-provision.yml
     secrets: inherit
   deploy-blue-app-to-production:
     needs: provision-resources
-    uses: ./.github/workflows/reuse/app-service-deploy.yml
+    uses: ./.github/workflows/app-service-deploy.yml
     with:
       apsName: ${{ needs.provision-resources.outputs.apsName }}
       ref: blue
     secrets: inherit
   deploy-green-app-to-staging:
     needs: provision-resources
-    uses: ./.github/workflows/reuse/app-service-deploy.yml
+    uses: ./.github/workflows/app-service-deploy.yml
     with:
       apsName: ${{ needs.provision-resources.outputs.apsName }}
       slot: staging
