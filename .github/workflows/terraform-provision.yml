@@ -59,7 +59,7 @@ jobs:
         run: |
           rgName=$(terraform output -raw resource_group_name)
           gh secret set RG_NAME --body $rgName
-          apsName=$(terraform output -raw app_service_name)
+          appName=$(terraform output -raw app_service_name)
           gh secret set APP_NAME --body $appName
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
