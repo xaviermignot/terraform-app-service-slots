@@ -17,6 +17,10 @@ on:
         default: main
         required: false
         type: string
+      publishProfile:
+        description: The publish profile to use
+        required: true
+        type: string
 
 jobs:
   build-and-deploy:
@@ -51,5 +55,5 @@ jobs:
         with: 
           app-name: ${{ inputs.apsName }} 
           slot-name: ${{ inputs.slot }}
-          publish-profile: ${{ secrets[format('{0}_PUBLISH_PROFILE', inputs.slot)] }}
+          publish-profile: ${{ inputs.publishProfile }}
           package: ./src/ApsSlotsDemo.App/publish/ApsSlotsDemo.App
