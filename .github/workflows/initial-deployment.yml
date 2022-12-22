@@ -11,14 +11,12 @@ jobs:
     needs: provision-resources
     uses: ./.github/workflows/app-service-deploy.yml
     with:
-      apsName: ${{ secrets.APP_NAME }}
       ref: blue
     secrets: inherit
   deploy-green-app-to-staging:
     needs: provision-resources
     uses: ./.github/workflows/app-service-deploy.yml
     with:
-      apsName: ${{ secrets.APP_NAME }}
       slot: staging
       ref: green
     secrets: inherit
