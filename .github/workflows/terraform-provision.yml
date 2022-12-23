@@ -2,6 +2,10 @@ name: Provision Azure resources with Terraform
 
 on:
   workflow_call:
+    outputs:
+      appName:
+        description: The name of the App Service
+        value: ${{ jobs.provision.outputs.appName }}
 
 defaults:
   run:
@@ -16,8 +20,7 @@ jobs:
       TF_WORKSPACE: ${{ secrets.TF_WORKSPACE }}
 
     outputs:
-      rgName: ${{ steps.apply.outputs.rgName }}
-      apsName: ${{ steps.apply.outputs.apsName }}
+      appName: ${{ steps.apply.outputs.appName }}
 
     permissions:
       actions: write
@@ -61,5 +64,6 @@ jobs:
           gh secret set RG_NAME --body $rgName
           appName=$(terraform output -raw app_service_name)
           gh secret set APP_NAME --body $appName
+          echo "appName=$appName" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}

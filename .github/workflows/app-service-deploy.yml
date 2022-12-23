@@ -3,6 +3,10 @@ name: Deploy to App Service
 on:
   workflow_call:
     inputs:
+      appName:
+        description: The name of the App Service
+        required: true
+        type: string
       slot:
         description: The slot to deploy the application to
         default: production
@@ -50,6 +54,6 @@ jobs:
       - name: Deploy to App Service
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ secrets.APP_NAME }} 
+          app-name: ${{ inputs.appName }} 
           slot-name: ${{ inputs.slot }}
           package: ./src/ApsSlotsDemo.App/publish/ApsSlotsDemo.App
