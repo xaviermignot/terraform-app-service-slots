@@ -14,7 +14,7 @@ variable "active_app" {
   type    = string
   default = "blue"
   validation {
-    condition     = var.active_app == "blue" || var.active_app == "green" || var.active_app == ""
+    condition     = var.active_app == "blue" || var.active_app == "green"
     error_message = "The active_app value must be either 'blue' or 'green' (defaults to 'blue')."
   }
 }
