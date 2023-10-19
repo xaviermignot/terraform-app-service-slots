@@ -55,11 +55,6 @@ jobs:
           activeApp=$(terraform show -json | jq -r '.values.outputs.active_app.value // "blue"')
           echo "Applying with active app $activeApp"
           terraform apply -auto-approve -var active_app=$activeApp
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Update GitHub secrets
         id: update-secrets
