@@ -20,7 +20,7 @@ In your Terraform Cloud organization (you can create one for free), create a new
 
 ### Create a service principal in Azure
 To grant access to your Azure subscription to the GitHub Action runners, you need to create a service principal with the _contributor_ role to your subscription.  
-Everything is well explained [here](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux#create-an-azure-active-directory-application-and-service-principal), follow the instructions and save your tenantId, subscriptionId, clientId and clientSecret for later.
+Everything is well explained [here](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux#use-the-azure-login-action-with-openid-connect), follow the instructions until you have added federated credentials and save your tenantId, subscriptionId and clientId for later.
 
 ### Fork the repository and set a bunch of secrets
 To run the GitHub Actions workflows you need to fork this repository. I haven't tested the fork myself as I don't have a secondary account, so I hope this works.  
@@ -28,7 +28,6 @@ To run the GitHub Actions workflows you need to fork this repository. I haven't 
 In your fork you need to set a few secrets. You should already have the `AZURE_CREDENTIALS` secret set from the previous step.  
 Add these secrets to make Terraform CLI connect to Azure:
 - `AZURE_CLIENT_ID` with your service principal's client id
-- `AZURE_CLIENT_SECRET` with the client secret
 - `AZURE_SUBCRIPTION_ID` with your subscription id
 - `AZURE_TENANT_ID` with your tenant id
 
