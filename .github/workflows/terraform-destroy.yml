@@ -45,7 +45,7 @@ jobs:
 
       - name: Update GitHub secrets
         run: |
-          gh secret delete APP_NAME
-          gh secret delete RG_NAME
+          gh variable delete APP_NAME
+          gh variable delete RG_NAME
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}

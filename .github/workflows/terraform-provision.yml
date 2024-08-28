@@ -58,13 +58,13 @@ jobs:
         env:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Update GitHub secrets
-        id: update-secrets
+      - name: Update GitHub variables
+        id: update-vars
         run: |
           rgName=$(terraform output -raw resource_group_name)
-          gh secret set RG_NAME --body $rgName
+          gh variable set RG_NAME --body $rgName
           appName=$(terraform output -raw app_service_name)
-          gh secret set APP_NAME --body $appName
+          gh variable set APP_NAME --body $appName
           echo "appName=$appName" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
