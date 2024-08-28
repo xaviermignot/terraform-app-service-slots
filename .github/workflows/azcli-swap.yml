@@ -48,3 +48,5 @@ jobs:
           [[ "$currentActiveApp" == 'green' ]] && newActiveApp="blue" || newActiveApp="green"
           echo "Swapping from $currentActiveApp to $newActiveApp..."
           terraform apply -auto-approve -var active_app=$newActiveApp
+        env:
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
