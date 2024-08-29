@@ -20,7 +20,7 @@ jobs:
       TF_WORKSPACE: ${{ secrets.TF_WORKSPACE }}
 
     outputs:
-      appName: ${{ steps.update-secrets.outputs.appName }}
+      appName: ${{ steps.update-vars.outputs.appName }}
 
     permissions:
       actions: write
