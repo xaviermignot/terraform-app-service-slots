@@ -35,13 +35,13 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
           terraform_wrapper: false
           terraform_version: 1.5.7
-        env:
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
+          
       - name: Terraform Destroy
         run: |
           terraform init
           terraform destroy -auto-approve
+        env:
+            ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Update GitHub secrets
         run: |
