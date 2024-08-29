@@ -22,23 +22,24 @@ In your Terraform Cloud organization (you can create one for free), create a new
 To grant access to your Azure subscription to the GitHub Action runners, you need to create a service principal with the _contributor_ role to your subscription.  
 Everything is well explained [here](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux#use-the-azure-login-action-with-openid-connect), follow the instructions until you have added federated credentials and save your tenantId, subscriptionId and clientId for later.
 
-### Fork the repository and set a bunch of secrets
+### Fork the repository and set a bunch of variables and secrets
 To run the GitHub Actions workflows you need to fork this repository. I haven't tested the fork myself as I don't have a secondary account, so I hope this works.  
 
-In your fork you need to set a few secrets. You should already have the `AZURE_CREDENTIALS` secret set from the previous step.  
-Add these secrets to make Terraform CLI connect to Azure:
+In your fork you need to set these variables to make Terraform CLI connect to Azure:
 - `AZURE_CLIENT_ID` with your service principal's client id
 - `AZURE_SUBCRIPTION_ID` with your subscription id
 - `AZURE_TENANT_ID` with your tenant id
 
-Then to grant to the runner access to your Terraform Cloud workspace you need these secrets:
+Then to grant to the runner access to your Terraform Cloud workspace you need this secret:
 - `TF_API_TOKEN` with an API token you can create from the GUI
+
+And these variables:
 - `TF_CLOUD_ORGANIZATION` with your Terraform Cloud organization name
 - `TF_WORKSPACE` with the name of your workspace
 
-Lastly, some of the workflows are creating secrets in GitHub, you'll need to create a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for that with the following permissions:
+Lastly, some of the workflows are creating variables in GitHub, you'll need to create a [fined-grained personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for that with the following permissions:
 - Access to your fork's repo
-- Read and write access to secrets (this will also select the read access to metadata)
+- Read and write access to variables (this will also select the read access to metadata)
 
 Once the PAT generated, save its value in the `GH_PAT` secret, and you're all set !
 
